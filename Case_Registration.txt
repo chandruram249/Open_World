@@ -1,0 +1,787 @@
+*** Settings ***
+Force Tags        CR
+Library           ExcelLibrary
+Library           Selenium2Library
+Resource          Login.robot
+Resource          CaseRegistration.robot
+Library           String
+Resource          Random_String.robot
+Library           DateTime
+Library           Collections
+
+*** Test Cases ***
+Testcase 3: Should show the temporary saved case in case registration stage
+    Close Browser
+    #Case Registration    ${filename}    ${sheetname}
+    Random String
+    #[Arguments]    ${filename}    ${sheetname}
+    #Open Excel    ${filename}
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    #Input Text    ${hremailid_path}    ${hremailid}
+    Click Element    ${selectallcomponent_path}
+    Click Element    ${save_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Click Element    ${filtersearch_path}
+    Clear Element Text    ${firstnamefilter_path}
+    Clear Element Text    ${lastnamefilter_path}
+    Click Element    ${clientfilterclose_path}
+    ${firstletter}=    Get substring    ${randomfirstname}    0    1
+    ${upperletter}=    Convert To Uppercase    ${firstletter}
+    ${nextletters}=    Get substring    ${randomfirstname}    1
+    ${randomfirstname}=    Catenate    ${upperletter}${nextletters}
+    ${firstletter}=    Get substring    ${randomlastname}    0    1
+    ${upperletter}=    Convert To Uppercase    ${firstletter}
+    ${nextletters}=    Get substring    ${randomlastname}    1
+    ${randomlastname}=    Catenate    ${upperletter}${nextletters}
+    Page Should Contain    ${randomfirstname}
+    Page Should Contain    ${randomlastname}
+    Page Should Contain    ${clientname}
+    Log To Console    Case has been saved and showing in case registration dashboard
+    #Wait Until Element Is Visible    ${click_case}
+    # Click Element    ${click_case}
+    #Page Should Contain    ${clientname}
+    #Element Should Contain    ${firstname_path}    ${randomfirstname}
+    #Element Should Contain    ${lastname_path}    ${randomlastname}
+    #Page Should Contain    ${candidateid}
+    #Page Should Contain    ${randomfirstname}@gmail.com
+    #Page Should Contain    ${fathersfirstname}
+    #Page Should Contain    ${fatherslastname}
+    #Page Should Contain    ${employeeid}
+    #Page Should Contain    ${landlinenumber}
+    #Page Should Contain    ${mobilenumber}
+    #Page Should Contain    ${hremailid}
+    #Page Should Contain    ${landlinenumber}
+    #Page Should Contain    ${mobilenumber}
+    #Page Should Contain    ${employeeid}
+    #Page Should Contain    ${candidateid}
+    #Page Should Contain    ${hremailid}
+    #${colcount}    Get Column Count    ${sheetname}
+    #${content}    Read Cell Data By Coordinates    ${sheetname}    0    0
+    #Log    ${content}
+
+Testcase 30: Should not trigger a mail to candidate if only database check is selected if candidate doing data entry
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybycandidate_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    Input Text    ${hremailid_path}    ${hremailid}
+    Element Should Be Visible    //strong[text()='Database']
+    ${xpath}=    Set Variable    ${comp_name_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    Run Keyword If    '${component}' == 'Database'    click database
+    #\    Log To Console    ${component}
+    #Click Element    ${save_path}
+    #Wait Until Element Is Visible    ${ok_path}
+    #Click Element    ${ok_path}
+
+Testcase 43: Should not show employment check if fresher is selected in case registration
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybycandidate_path}
+    Click Element    ${category_path}
+    Click Element    ${category_fresher_path}
+    Input Text    ${firstname_path}    Karthi
+    ${xpath}=    Set Variable    ${compmatchingnode_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    Run Keyword If    '${component}' == 'Employment 1(Latest/Current)'    Fail
+    Log To Console    Employment Check is Not Found in Case Registration for Fresher
+    Close Browser
+
+Testcase 45: Should show employment check in case registration screen if employment is selected
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybycandidate_path}
+    Click Element    ${category_path}
+    Click Element    ${category_exp_path}
+    Input Text    ${firstname_path}    Karthi
+    Page Should Contain    Employment 1(Latest/Current)
+    Log To Console    Employment Check is Found in Case Registration for Experience
+    \    #Pass Execution If    '${component}' == 'Employment 1(Latest/Current)'    Employment Check is Found in Case Registration for Experience
+    Close Browser
+
+Testcase 33: To Check for In Date and Case registration date in Data Entry Stage after the case was registered
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    #Input Text    ${hremailid_path}    ${hremailid}
+    Click Element    ${selectallcomponent_path}
+    Click Element    ${save_submit_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Sleep    3s
+    Click Element    ${dataentrysupervision_path}
+    Sleep    3s
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Click Element    ${filtersearch_path}
+    Sleep    3s
+    ${regdate}=    Get Text    ${regdate_path}
+    ${indate}=    Get Text    ${indate_path}
+    Should Be Equal    ${regdate}    ${indate}
+    Close Browser
+
+Testcase 40: To Check for search filters in case registration page
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    Click Element    ${selectallcomponent_path}
+    Click Element    ${save_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Click Element    ${filtersearch_path}
+    Clear Element Text    ${firstnamefilter_path}
+    Clear Element Text    ${lastnamefilter_path}
+    Click Element    ${clientfilterclose_path}
+    ${firstletter}=    Get substring    ${randomfirstname}    0    1
+    ${upperletter}=    Convert To Uppercase    ${firstletter}
+    ${nextletters}=    Get substring    ${randomfirstname}    1
+    ${randomfirstname}=    Catenate    ${upperletter}${nextletters}
+    ${firstletter}=    Get substring    ${randomlastname}    0    1
+    ${upperletter}=    Convert To Uppercase    ${firstletter}
+    ${nextletters}=    Get substring    ${randomlastname}    1
+    ${randomlastname}=    Catenate    ${upperletter}${nextletters}
+    Page Should Contain    ${randomfirstname}
+    Page Should Contain    ${randomlastname}
+    Page Should Contain    ${clientname}
+    ${refno}=    Get Text    ${getrefno_path}
+    Should Not Be Equal    '${refno}'    '${EMPTY}'
+    Click Element    ${filterclear_path}
+    Input Text    ${refnofilter_path}    ${refno}
+    Click Element    ${filtersearch_path}
+    Click Element    ${removerefno_path}
+    Page Should Contain    ${refno}
+    Click Element    ${filterclear_path}
+    Click Element    ${lastsavedfrom_path}
+    Click Element    ${lastsavedfromyear_path}
+    Click Element    ${lastsavedfrommonthselection_path}
+    Click Element    ${lastsavedfromdateselection_path}
+    Click Element    ${filtersearch_path}
+    Click Element    ${pagesize_path}
+    ${xpath}=    Set Variable    ${rowsize_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    ${currentdate}=    Get Current Date
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    @{result} =    Split String    ${component}
+    \    @{resultdate}=    Split String    @{result}[0]    /
+    \    ${timeto} =    Subtract Date From Date    ${currentdate}    @{resultdate}[2]-@{resultdate}[1]-@{resultdate}[0] 00:00:00.000
+    \    ${timefrom} =    Subtract Date From Date    ${fromyear}-${frommonthn}-${fromdate} 00:00:00.000    @{resultdate}[2]-@{resultdate}[1]-@{resultdate}[0] 00:00:00.000
+    \    Should Be True    ${timeto} >= 0
+    \    Should Be True    ${timefrom} <=0
+    #Close Browser
+
+Testcase 52: To Check whether Temporary saved data are available in Case Registration page
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    ${xpath}=    Set Variable    ${comp_name_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    Run Keyword If    '${component}' == '${component_eduselect}'    Select Checkbox
+    \    Run Keyword If    '${component}' == '${component_refselect}'    Select Checkbox
+    \    Run Keyword If    '${component}' == '${component_addselect}'    Select Checkbox
+    Click Element    ${save_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Click Element    ${filtersearch_path}
+    Sleep    2s
+    Wait Until Element Is Visible    ${click_case_path}
+    Click Element    ${click_case_path}
+    Page Should Contain    ${clientname}
+    Wait Until Element Is Visible    ${save_submit_path}
+    ${xpath}=    Set Variable    ${comp_name_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    Run Keyword If    '${component}' == '${component_eduselect}'    Checkbox Checked
+    \    Run Keyword If    '${component}' == '${component_refselect}'    Checkbox Checked
+    \    Run Keyword If    '${component}' == '${component_addselect}'    Checkbox Checked
+    \    Run Keyword If    '${component}' == '${component_addunselect}'    Checkbox Unchecked
+    \    Run Keyword If    '${component}' == '${component_highestunselect}'    Checkbox Unchecked
+    \    Run Keyword If    '${component}' == '${component_refunselect}'    Checkbox Unchecked
+
+Testcase 44: Should remove fresher yes or no radio button from the candidate basic information section
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${validclientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybycandidate_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@testmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    Input Text    ${hremailid_path}    ${validmailid}
+    Click Element    ${selectallcomponent_path}
+    Click Element    ${save_submit_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Close Browser
+    Browser-Headless
+    Gmail
+    Input Text    ${gmailusername_path}    ${validmailid}
+    Click Element    ${next_path}
+    Sleep    2s
+    Input Text    ${gmailpassword_path}    ${gmailpassword}
+    Click Element    ${next_path}
+    Sleep    2s
+    Wait Until Element Is Visible    ${compose_path}
+    Input Text    ${gmailsearch_path}    ${validclientname} ${searchtext}
+    Press Key    ${gmailsearch_path}    \\13
+    Wait Until Element Is Visible    ${searchitemclick_path}
+    Click Element    ${searchitemclick_path}
+    Wait Until Element Is Visible    ${setuppassword_path}
+    ${linkcount}=    Get Matching Xpath Count    ${setuppassword_path}
+    ${dotcount}=    Get Matching Xpath Count    ${threedot_path}
+    Set Global Variable    ${linkcount}
+    Set Global Variable    ${dotcount}
+    Log To Console    ${linkcount}
+    Log To Console    ${dotcount}
+    #${threedotvisible} =    Page Should Contain Element    ${threedot_path}
+    Run keyword If    ${dotcount}>0    Click Dot
+    Click Element    xpath=(${setuppassword_path})[${linkcount}]
+    #Click Element    ${candidateloginurl_path}
+    Sleep    3s
+    Select Window    title=${title}
+    Wait Until Element Is Visible    ${confirmbutton_path}
+    Clear Element Text    ${newpassword_path}
+    Input Text    ${newpassword_path}    ${newpassword}
+    Clear Element Text    ${confirmpassword_path}
+    Input Text    ${confirmpassword_path}    ${confirmpassword}
+    Click Button    ${confirmbutton_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Wait Until Element Is Visible    @{loginbutton}
+    Clear Element Text    @{usernamepath}
+    Input Text    @{usernamepath}    ${randomfirstname}@testmail.com
+    Clear Element Text    @{passwordpath}
+    Input Text    @{passwordpath}    ${confirmpassword}
+    Click Button    @{loginbutton}
+    Sleep    2s
+    Click Element    ${closeguideline_path}
+    Page Should Not Contain Radio Button    Yes
+    Page Should Not Contain Radio Button    No
+
+Testcase 2: Should show only the registered component in data entry stage
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    ${xpath}=    Set Variable    ${comp_name_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    Run Keyword If    '${component}' == '${component_eduselect}'    Select Checkbox
+    \    Run Keyword If    '${component}' == '${component_refselect}'    Select Checkbox
+    \    Run Keyword If    '${component}' == '${component_addselect}'    Select Checkbox
+    Click Element    ${save_submit_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Sleep    3s
+    Click Element    ${dataentrysupervision_path}
+    Sleep    3s
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Click Element    ${filtersearch_path}
+    Sleep    2s
+    Wait Until Element Is Visible    ${click_case_path}
+    Click Element    ${click_case_path}
+    Sleep    3s
+    ${xpath_DEcomponent}=    Set Variable    ${dataentrycomponent_path}
+    ${count_DEcomponent}=    Get Matching Xpath Count    ${xpath_DEcomponent}
+    #${value} =    Get length    ${multiple_component}
+    Should Be True    ${value} == ${count_DEcomponent}
+    : FOR    ${i}    IN RANGE    1    ${count_DEcomponent} + 1
+    \    ${component}=    Get Text    xpath=(${xpath_DEcomponent})[${i}]
+    \    List Should Contain Value    ${multiple_component}    ${component}
+    Close Browser
+
+To Check Database Check Selection Checkbox
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    ${xpath}=    Set Variable    ${comp_name_path}
+    ${count}=    Get Matching Xpath Count    ${xpath}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath})[${i}]
+    \    Set Global Variable    ${i}
+    \    Run Keyword If    '${component}' == 'Database'    Select Checkbox Database
+    Close Browser
+
+To Check for Component Selection Checkbox
+    Close Browser
+    Random String
+    Browser-Headless
+    Openworld Portal
+    #Service Provider Login - portal
+    Wait Until Element Is Visible    ${caseregisterlink_path}
+    Click Element    ${caseregisterlink_path}
+    Click Button    ${newcaseregn_path}
+    Click Element    ${clientselection_path}
+    Input Text    ${clientsearch_path}    ${clientname}
+    Press Key    ${clientsearch_path}    \\13
+    Wait Until Element Is Visible    ${dataentrybyselection_path}
+    Click Element    ${dataentrybyselection_path}
+    Click Element    ${selectdataentrybysp_path}
+    Input Text    ${firstname_path}    ${randomfirstname}
+    Input Text    ${lastname_path}    ${randomlastname}
+    Click Element    ${dob_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobyear_path}
+    Click Element    ${dobarrow_path}
+    Click Element    ${dobyearselection_path}
+    Click Element    ${dobmonthselection_path}
+    Click Element    ${dobdateselection_path}
+    Click Element    ${gender_path}
+    Click Element    ${genderoption_path}
+    Input Text    ${mailid_path}    ${randomfirstname}@gmail.com
+    Input Text    ${fatherfirstname_path}    ${fathersfirstname}
+    Input Text    ${fatherlastname_path}    ${fatherslastname}
+    Click Element    ${maritalstatus_path}
+    Click Element    ${maritalstatusoption_path}
+    Input Text    ${candidateid_path}    ${candidateid}
+    Input Text    ${employeeid_path}    ${employeeid}
+    Input Text    ${landlinenumber_path}    ${landlinenumber}
+    Input Text    ${mobilenumber_path}    ${mobilenumber}
+    Click Element    ${priority_path}
+    Click Element    ${priorityoption_path}
+    ${xpath_component}=    Set Variable    ${comp_name_path}
+    ${xpath_checkbox}=    Set Variable    ${checkbox_selection_path}
+    ${count}=    Get Matching Xpath Count    ${xpath_component}
+    : FOR    ${i}    IN RANGE    1    ${count} + 1
+    \    ${component}=    Get Text    xpath=(${xpath_component})[${i}]
+    \    Set Global Variable    ${i}
+    \    ${status}=    Run Keyword And Return Status    Checkbox Should be Selected    xpath=(${xpath_checkbox})[${i}]
+    \    Run Keyword if    '${status}' != 'True'    Select Checkbox
+    \    Run Keyword if    ${i} < ${count}    Uncheck Select All
+    \    Run Keyword if    ${i} == ${count}    Check Select All
+    Click Element    ${save_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Sleep    3s
+    Click Element    ${click_case_path}
+    Wait Until Element Is Visible    ${save_path}
+    Click Element    xpath=(${xpath_checkbox})[${3}]
+    Uncheck Select All
+    Click Element    ${save_path}
+    Sleep    3s
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+
+*** Keywords ***
+click database
+    ${xpath}=    Set Variable    ${checkbox_selection_path}
+    Click Element    xpath=(${xpath})[${i}]
+    Click Element    ${save_submit_path}
+    Wait Until Element Is Visible    ${no_path}
+    Element Text Should Be    ${message_path}    ${messagedb_Text_alert}
+    Click Element    ${no_path}
+    Page Should Contain    Database
+    Sleep    3s
+    Click Element    ${save_submit_path}
+    Wait Until Element Is Visible    ${yes_path}
+    Element Text Should Be    ${message_path}    ${messagedb_Text_alert}
+    Click Element    ${yes_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Element Text Should Be    ${message_path}    ${casesave_alert}
+    Click Element    ${ok_path}
+    Sleep    3s
+    Wait Until Element Is Visible    ${verificationsupervision_path}
+    Click Element    ${verificationsupervision_path}
+    Sleep    3s
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Click Element    ${filtersearch_path}
+    Clear Element Text    ${firstnamefilter_path}
+    Clear Element Text    ${lastnamefilter_path}
+    Click Element    ${clientfilterclose_path}
+    ${firstletter}=    Get substring    ${randomfirstname}    0    1
+    ${upperletter}=    Convert To Uppercase    ${firstletter}
+    ${nextletters}=    Get substring    ${randomfirstname}    1
+    ${randomfirstname}=    Catenate    ${upperletter}${nextletters}
+    ${firstletter}=    Get substring    ${randomlastname}    0    1
+    ${upperletter}=    Convert To Uppercase    ${firstletter}
+    ${nextletters}=    Get substring    ${randomlastname}    1
+    ${randomlastname}=    Catenate    ${upperletter}${nextletters}
+    Page Should Contain    ${randomfirstname}
+    Page Should Contain    ${randomlastname}
+    Page Should Contain    ${clientname}
+    Log To Console    Case Available in Verification Stage
+    Close Browser
+
+Select Checkbox
+    ${xpath}=    Set Variable    ${checkbox_selection_path}
+    Click Element    xpath=(${xpath})[${i}]
+    ${value}=    Evaluate    ${value}+1
+    Set Global Variable    ${value}
+
+Checkbox Checked
+    ${xpath}=    Set Variable    ${checkbox_selection_path}
+    Checkbox Should Be Selected    xpath=(${xpath})[${i}]
+
+Checkbox Unchecked
+    ${xpath}=    Set Variable    ${checkbox_selection_path}
+    Checkbox Should Not Be Selected    xpath=(${xpath})[${i}]
+
+Click Dot
+    Click Element    xpath=(${threedot_path})[${dotcount}]
+
+Select Checkbox Database
+    ${xpath}=    Set Variable    ${checkbox_selection_path}
+    ${status}=    Run Keyword And Return Status    Checkbox Should be Selected    xpath=(${xpath})[${i}]
+    Run Keyword if    '${status}' != 'True'    Select Checkbox
+    Click Element    ${databasecomponent_path}
+    ${status}=    Run Keyword And Return Status    Checkbox Should be Selected    ${databaseselectall_path}
+    Run Keyword if    '${status}' == 'True'    Fail
+    Click Element    ${save_path}
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Click Element    ${filtersearch_path}
+    Sleep    3s
+    Wait Until Element Is Visible    ${click_case_path}
+    Click Element    ${click_case_path}
+    ${status}=    Run Keyword And Return Status    Checkbox Should be Selected    ${databaseselectall_path}
+    Run Keyword if    '${status}' == 'True'    Fail
+    ${status}=    Run Keyword And Return Status    Checkbox Should be Selected    ${databasecomponent_path}
+    Run Keyword if    '${status}' == 'True'    Fail
+    Click Element    ${databaseselectall_path}
+    Click Element    ${save_path}
+    Sleep    2s
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+    Input Text    ${firstnamefilter_path}    ${randomfirstname}
+    Input Text    ${lastnamefilter_path}    ${randomlastname}
+    Wait Until Element Is Visible    ${clientfilter_path}
+    Input Text    ${clientfilter_path}    ${clientname}
+    Press Key    ${clientfilter_path}    \\13
+    Click Element    ${filtersearch_path}
+    Sleep    2s
+    Wait Until Element Is Visible    ${click_case_path}
+    Click Element    ${click_case_path}
+    ${status}=    Run Keyword And Return Status    Checkbox Should be Selected    ${databaseselectall_path}
+    Run Keyword if    '${status}' == 'False'    Fail
+    Click Element    ${save_path}
+    Sleep    2s
+    Wait Until Element Is Visible    ${ok_path}
+    Click Element    ${ok_path}
+
+Uncheck Select All
+    Checkbox Should not be Selected    ${selectallcomponent_path}
+
+Check Select All
+    Checkbox Should be Selected    ${selectallcomponent_path}

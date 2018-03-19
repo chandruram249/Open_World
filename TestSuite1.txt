@@ -1,0 +1,72 @@
+*** Settings ***
+Suite Teardown    Close All Browsers
+Library           Selenium2Library
+Library           ExcelRead.py
+Resource          Login.robot
+
+*** Variable ***
+${INDEXCOL}       0
+${INDEXROW}       1
+${validloggedinalert}    Logged in Successfully
+
+*** Test Cases ***
+ExcelReadWrite
+    ExcelRead
+
+Service Provider Login
+    Service Provider Login
+
+*** keywords ***
+Manipulate Multiple Windows
+    [Tags]    MultiWindow
+    Open Browser    http://robotframework.org    chrome
+    Maximize Browser Window
+    ${Window1Title}=    Get Title
+    Wait Until Element Is Visible    css=div.button.orange    10s
+    Click Element    css=div.button.orange
+    Wait Until Element Is Visible    link=Builtin
+    Click Element    link=Builtin
+    Log    This is a new Window
+    Sleep    5s
+    Select Window    title=Robot Framework documentation
+    Wait Until Element Is Visible    //button[@value='BuiltIn']
+    Click Element    //button[@value='BuiltIn']
+    Sleep    5s
+
+ExcelRead
+    ${rowcount}=    RowEndIndex
+    ${colcount}=    ColEndIndex
+    ${INDEXCOL}=    Convert To Integer    ${INDEXCOL}
+    : FOR    ${INDEXROW}    IN RANGE    1    ${rowcount}
+    \    ${username}=    Read    ${INDEXROW}    ${INDEXCOL}
+    \    ${password}=    Read    ${INDEXROW}    ${INDEXCOL+1}
+    \    ${alert}=    Read    ${INDEXROW}    ${INDEXCOL+2}
+    \    Set Global Variable    ${alert}
+    \    open browser    http://192.168.2.17:5000    chrome
+    \    Maximize Browser Window
+    \    input text    xpath=//input[@placeholder='Username']    ${username}
+    \    input password    xpath=//input[@placeholder='Password']    ${password}
+    \    Click button    xpath=//button[contains(text(),'Login')]
+    \    Sleep    5s
+    \    Run Keyword If    ${INDEXROW} == 1    ValidUsernameandpassword
+    \    Run Keyword If    ${INDEXROW} > 1    Invalidusernameandpassword
+    \    Close Browser
+    \    #Run Keyword And Continue On Failure    Enter valid username and invalidpassword    FAIL    The End
+    #Log    ${username}
+    #Log    ${password}
+    #Log    ${alert}
+
+ValidUsernameandpassword
+    Element Should Contain    xpath=//div[@id='home']    Home1
+    Run Keyword And Ignore Error    Resultfail
+    #Run Keyword And Continue On Failure    Resultfail
+    #Should Be Equal    ${alert}    ${validloggedinalert}
+    #Should Be Equal    '${alert}'    '${validloggedinalert}'    Usernotloggedinsuccefully
+    #Run Keyword Unless    '${alert}' == '${validloggedinalert}'    Resultfail
+    #Log    Logged in Successfully
+
+Resultpass
+    Log    Pass
+
+Resultfail
+    Log    Fail

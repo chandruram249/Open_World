@@ -1,0 +1,128 @@
+*** Settings ***
+Force Tags        login
+Library           Selenium2Library
+Library           ExcelLibrary
+Library           New_File.py
+
+*** Variables ***
+@{URL}            http://192.168.2.17:5000
+@{Browser}        chrome
+@{usernamepath}    xpath=//input[@placeholder='Username']
+@{passwordpath}    xpath=//input[@placeholder='Password']
+@{loginbutton}    xpath=//button[contains(text(),'Login')]
+@{home}           xpath=//h1
+@{loginalertpath}    xpath=//div[@class='message']
+@{ValidUsername}    demoemp
+@{InvalidUsername}    demo
+@{ValidPassword}    Pass@123
+@{InvalidPassword}    pass@3432
+
+*** Test Cases ***
+Enter valid username and valid password
+    Enter valid username and valid password
+
+Enter valid username and invalid password
+    Enter valid username and invalid password
+
+Enter invalid username and valid password
+    Enter invalid username and valid password
+
+Enter invalid username and invalid password
+    Enter invalid username and invalid password
+
+Enter with username and without password
+    Enter with username and without password
+
+Enter without username and with password
+    Enter without username and with password
+
+Enter without username and without password
+    Enter without username and without password
+
+*** Keywords ***
+Enter valid username and valid password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    @{ValidUsername}
+    input password    @{passwordpath}    @{ValidPassword}
+    Click button    @{loginbutton}
+    Wait Until Element Is Visible    @{home}
+    #${hometext}=    Get Text    @{home}
+    #Log To Console    ${home}
+    #Log    ${hometext}
+    Element Text Should Be    @{home}    Home
+    Log To Console    Logged in Successfully
+    #Element Should Contain    @{home}    Home1
+    Close Browser
+
+Enter valid username and invalid password
+    #Register Keyword To Run On Failure    Enter invalid username and valid password
+    #Run Keyword And Continue On Failure    Enter invalid username and valid password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    @{ValidUsername}
+    input password    @{passwordpath}    @{InvalidPassword}
+    Click button    @{loginbutton}
+    Sleep    2s
+    Element Text Should Be    @{loginalertpath}    You have entered a wrong Password.
+    Log To Console    Alert is Valid
+    Close Browser
+
+Enter invalid username and valid password
+    #Register Keyword To Run On Failure    Enter invalid username and invalid password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    @{InvalidUsername}
+    input password    @{passwordpath}    @{validPassword}
+    Click button    @{loginbutton}
+    Sleep    2s
+    Element Text Should Be    @{loginalertpath}    Username not available. Please make sure that Username you have entered is correct.
+    Log To Console    Alert is Valid
+    Close Browser
+
+Enter invalid username and invalid password
+    #Register Keyword To Run On Failure    Enter with username and without password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    @{InvalidUsername}
+    input password    @{passwordpath}    @{InvalidPassword}
+    Click button    @{loginbutton}
+    Sleep    2s
+    Element Text Should Be    @{loginalertpath}    Username not available. Please make sure that Username you have entered is correct.
+    Log To Console    Alert is Valid
+    Close Browser
+
+Enter with username and without password
+    #Register Keyword To Run On Failure    Enter without username and with password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    @{InvalidUsername}
+    input password    @{passwordpath}    ${EMPTY}
+    Click button    @{loginbutton}
+    Sleep    2s
+    Element Text Should Be    @{loginalertpath}    Please provide a valid Password.
+    Log To Console    Alert is Valid
+    Close Browser
+
+Enter without username and with password
+    #Register Keyword To Run On Failure    Enter without username and without password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    ${EMPTY}
+    input password    @{passwordpath}    @{ValidUsername}
+    Click button    @{loginbutton}
+    Sleep    2s
+    Element Text Should Be    @{loginalertpath}    Please provide a valid Username.
+    Log To Console    Alert is Valid
+    Close Browser
+
+Enter without username and without password
+    open browser    @{URL}    @{Browser}
+    Maximize Browser Window
+    input text    @{usernamepath}    ${EMPTY}
+    input password    @{passwordpath}    ${EMPTY}
+    Click button    @{loginbutton}
+    Sleep    2s
+    Element Text Should Be    @{loginalertpath}    Please provide valid Username and Password.
+    Log To Console    Alert is Valid
+    Close Browser
